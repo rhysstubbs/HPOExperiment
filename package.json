@@ -1,0 +1,19 @@
+{
+  "name": "hpoexperiment",
+  "version": "1.0.0",
+  "description": "Hyper-parameter optimisation experiment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhysstubbs/HPOExperiment.git"
+  },
+  "author": "Rhys Stubbs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rhysstubbs/HPOExperiment/issues"
+  },
+  "homepage": "https://github.com/rhysstubbs/HPOExperiment#readme"
+}
