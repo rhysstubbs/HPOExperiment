@@ -1,5 +1,3 @@
-
-    
 {
   "env": {
     "browser": true,
@@ -23,13 +21,15 @@
     "modules": true
   },
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "no-undef": "warn",
+    "no-unused-vars": "warn"
   },
   "settings": {
     "react": {
       "createClass": "createReactClass",
       "pragma": "React",
-      "version": "16.6.3",
+      "version": "detect",
       "flowVersion": "0.53"
     },
     "propWrapperFunctions": [

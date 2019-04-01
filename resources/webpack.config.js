@@ -7,7 +7,6 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
-const WebpackChunkHashPlugin = require('webpack-chunk-hash');
 
 const assetPath = '../';
 const production = (process.env.NODE_ENV === 'production' || process.argv.includes('-p'));
@@ -17,14 +16,14 @@ module.exports = {
     context: path.resolve(__dirname),
     entry: {
         '/js/app': [
-            path.resolve(__dirname, 'assets/javascript/app.js'),
-            path.resolve(__dirname, 'assets/sass/app.scss')
+            path.resolve(__dirname, 'assets/js/app.js'),
+            path.resolve(__dirname, 'assets/scss/app.scss')
         ]
     },
     output: {
         path: path.resolve(__dirname, '../public/assets'),
-        filename: '[name].js?[chunkhash]',
-        chunkFilename: '[name].js?[chunkhash]',
+        filename: '[name].js?[contenthash:8]',
+        chunkFilename: '[name].js?[contenthash:8]',
         publicPath: ''
     },
     module: {
@@ -36,8 +35,8 @@ module.exports = {
             },
             {
                 test: /\.s[ac]ss$/,
-                exclude: [path.resolve(__dirname, 'assets/sass/app.scss')],
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
+                exclude: [path.resolve(__dirname, 'assets/scss/app.scss')],
+                loaders: ['style-loader', 'css-loader', 'scss-loader']
             },
             {
                 test: /\.less$/,
@@ -94,7 +93,7 @@ module.exports = {
                 }
             },
             {
-                test: path.resolve(__dirname, 'assets/sass/app.scss'),
+                test: path.resolve(__dirname, 'assets/scss/app.scss'),
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -169,15 +168,16 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "/css/app.css?[chunkhash]",
-            chunkFilename: "/css/[id].css?[chunkhash]"
+            filename: "/css/app.css?[contenthash:8]",
+            chunkFilename: "/css/[id].css?[contenthash:8]"
         }),
         new FriendlyErrorsPlugin({
             compilationSuccessInfo: {},
             shouldClearConsole: true
         }),
+        new webpack.ProvidePlugin({
+        }),
         new webpack[production ? 'HashedModuleIdsPlugin' : 'NamedModulesPlugin'](),
-        new WebpackChunkHashPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.LoaderOptionsPlugin({
             minimize: production
@@ -238,10 +238,10 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.jsx'],
         alias: {
-            "HPO": path.resolve('assets/javascript'),
+            "HPO": path.resolve(__dirname, 'assets/js'),
         },
         modules: [
-            path.resolve('./node_modules')
+            path.resolve(__dirname,'node_modules')
         ]
     },
     devtool: production ? 'source-map' : 'eval',

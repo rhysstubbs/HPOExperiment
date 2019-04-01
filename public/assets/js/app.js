@@ -154,49 +154,61 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./assets/javascript/app.js":
-/*!**********************************!*\
-  !*** ./assets/javascript/app.js ***!
-  \**********************************/
+/***/ "./assets/js/app.js":
+/*!**************************!*\
+  !*** ./assets/js/app.js ***!
+  \**************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _containers_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./containers/App */ \"./assets/javascript/containers/App.jsx\");\n/**\n * app.js\n *\n * This is the entry file for the application, only setup and boilerplate\n * code.\n */\n// Import all the third party stuff\n\n // Import root app\n\n\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  var MOUNT_NODE = document.getElementById('app');\n\n  if (MOUNT_NODE !== null) {\n    react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_containers_App__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)), MOUNT_NODE);\n  }\n});\n\n//# sourceURL=webpack:///./assets/javascript/app.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var HPO_containers_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! HPO/containers/App */ \"./assets/js/containers/App.jsx\");\n/**\n * app.js\n *\n * This is the entry file for the application, only setup and boilerplate\n * code.\n */\n// Import all the third party stuff\n\n // Import root app container\n\n\nvar WRAPPER = 'app'; // Render application\n\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  var MOUNT_NODE = document.getElementById(WRAPPER);\n\n  if (MOUNT_NODE !== null) {\n    react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(HPO_containers_App__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)), MOUNT_NODE);\n  }\n});\n\n//# sourceURL=webpack:///./assets/js/app.js?");
 
 /***/ }),
 
-/***/ "./assets/javascript/containers/App.jsx":
-/*!**********************************************!*\
-  !*** ./assets/javascript/containers/App.jsx ***!
-  \**********************************************/
+/***/ "./assets/js/containers/App.jsx":
+/*!**************************************!*\
+  !*** ./assets/js/containers/App.jsx ***!
+  \**************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return App; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/**\n *\n * App\n *\n * This component is the skeleton around the actual pages, and should only\n * contain code that should be seen on all pages. (e.g. navigation bar)\n */\n\nfunction App() {\n  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"h1\", null, \"HPO Experiment\"));\n}\n\n//# sourceURL=webpack:///./assets/javascript/containers/App.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_p5_wrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-p5-wrapper */ \"./node_modules/react-p5-wrapper/lib/P5Wrapper.js\");\n/* harmony import */ var react_p5_wrapper__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_p5_wrapper__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var HPO_sketches_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! HPO/sketches/index */ \"./assets/js/sketches/index.js\");\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n/**\n *\n * App\n *\n * This component is the skeleton around the actual page\n */\n\n\n\n\nvar App =\n/*#__PURE__*/\nfunction (_React$Component) {\n  _inherits(App, _React$Component);\n\n  function App(props) {\n    var _this;\n\n    _classCallCheck(this, App);\n\n    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));\n    _this.state = {};\n    return _this;\n  }\n\n  _createClass(App, [{\n    key: \"render\",\n    value: function render() {\n      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_p5_wrapper__WEBPACK_IMPORTED_MODULE_1___default.a, {\n        sketch: HPO_sketches_index__WEBPACK_IMPORTED_MODULE_2__[\"default\"]\n      }));\n    }\n  }]);\n\n  return App;\n}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);\n\nApp.defaultProps = {};\nApp.propTypes = {};\n/* harmony default export */ __webpack_exports__[\"default\"] = (App);\n\n//# sourceURL=webpack:///./assets/js/containers/App.jsx?");
 
 /***/ }),
 
-/***/ "./assets/sass/app.scss":
+/***/ "./assets/js/sketches/index.js":
+/*!*************************************!*\
+  !*** ./assets/js/sketches/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return sketch; });\nfunction sketch(p) {\n  var players = [];\n  window['walker'] = new Walker();\n  var iteration = 0;\n  var highestScore = 0;\n  /**\n   * Core P5.js functions\n   */\n\n  p.setup = function () {\n    window['p'] = p;\n    p.createCanvas(900, 550);\n    initNeat();\n\n    if (!USE_TRAINED_POP) {\n      for (var i = 0; i < 1; i++) {\n        neat.mutate();\n      }\n    }\n\n    startEvaluation();\n  };\n\n  p.draw = function () {\n    p.clear();\n    p.squareGrid();\n\n    if (iteration === ITERATIONS) {\n      endEvaluation();\n      iteration = 0;\n    }\n\n    window.players.forEach(function (player) {\n      player.update();\n      player.show();\n    });\n    window['walker'].update();\n    window['walker'].show();\n    iteration++;\n  }; //-----------------------------------------------------------\n\n  /**\n   * Draw a square grid with grey lines\n   */\n\n\n  p.squareGrid = function () {\n    p.stroke(204, 204, 204, 160);\n    p.strokeWeight(1);\n    p.fill(255);\n\n    for (var x = 0; x <= WIDTH / 20; x++) {\n      p.line(x * 20, 0, x * 20, HEIGHT);\n    }\n\n    for (var y = 0; y <= HEIGHT / 20; y++) {\n      p.line(0, y * 20, WIDTH, y * 20);\n    }\n\n    p.noStroke();\n  };\n  /**\n   * Calculate distance between two points\n   */\n\n\n  p.distance = function (x1, y1, x2, y2) {\n    var dx = x1 - x2;\n    var dy = y1 - y2;\n    return Math.sqrt(dx * dx + dy * dy);\n  };\n  /**\n   * Get a relative color between red and green\n   */\n\n\n  p.activationColor = function (value, max) {\n    var power = 1 - Math.min(value / max, 1);\n    var color = [255, 255, 0];\n\n    if (power < 0.5) {\n      color[0] = 2 * power * 255;\n    } else {\n      color[1] = (1.0 - 2 * (power - 0.5)) * 255;\n    }\n\n    return color;\n  };\n  /**\n   * Get the angle from one point to another\n   */\n\n\n  p.angleToPoint = function (x1, y1, x2, y2) {\n    var d = this.distance(x1, y1, x2, y2);\n    var dx = (x2 - x1) / d;\n    var dy = (y2 - y1) / d;\n    var a = Math.acos(dx);\n    a = dy < 0 ? 2 * Math.PI - a : a;\n    return a;\n  };\n  /**\n   * Set the walker to a new location\n   */\n\n\n  p.mouseClicked = function () {\n    if (p.mouseX >= 0 && p.mouseX <= WIDTH && p.mouseY >= 0 && p.mouseY <= HEIGHT) {\n      window['walker'].x = p.mouseX;\n      window['walker'].y = p.mouseY;\n    }\n  };\n}\n\n//# sourceURL=webpack:///./assets/js/sketches/index.js?");
+
+/***/ }),
+
+/***/ "./assets/scss/app.scss":
 /*!******************************!*\
-  !*** ./assets/sass/app.scss ***!
+  !*** ./assets/scss/app.scss ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./assets/sass/app.scss?");
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./assets/scss/app.scss?");
 
 /***/ }),
 
 /***/ 0:
-/*!***************************************************************!*\
-  !*** multi ./assets/javascript/app.js ./assets/sass/app.scss ***!
-  \***************************************************************/
+/*!*******************************************************!*\
+  !*** multi ./assets/js/app.js ./assets/scss/app.scss ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("__webpack_require__(/*! /Users/rhys/Desktop/Projects/git-repositories/HPOExperiment/resources/assets/javascript/app.js */\"./assets/javascript/app.js\");\nmodule.exports = __webpack_require__(/*! /Users/rhys/Desktop/Projects/git-repositories/HPOExperiment/resources/assets/sass/app.scss */\"./assets/sass/app.scss\");\n\n\n//# sourceURL=webpack:///multi_./assets/javascript/app.js_./assets/sass/app.scss?");
+eval("__webpack_require__(/*! /Users/rhys/Desktop/Projects/git-repositories/HPOExperiment/resources/assets/js/app.js */\"./assets/js/app.js\");\nmodule.exports = __webpack_require__(/*! /Users/rhys/Desktop/Projects/git-repositories/HPOExperiment/resources/assets/scss/app.scss */\"./assets/scss/app.scss\");\n\n\n//# sourceURL=webpack:///multi_./assets/js/app.js_./assets/scss/app.scss?");
 
 /***/ })
 
