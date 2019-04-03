@@ -176,6 +176,9 @@ module.exports = {
             shouldClearConsole: true
         }),
         new webpack.ProvidePlugin({
+            'window.neat': 'neataptic',
+            'neat': 'neataptic',
+            'neataptic': 'neataptic'
         }),
         new webpack[production ? 'HashedModuleIdsPlugin' : 'NamedModulesPlugin'](),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -246,7 +249,8 @@ module.exports = {
     },
     devtool: production ? 'source-map' : 'eval',
     node: {
-        fs: 'empty'
+        fs: 'empty',
+        child_process: 'empty'
     },
     performance: {
         hints: false

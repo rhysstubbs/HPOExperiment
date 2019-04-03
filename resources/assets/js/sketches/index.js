@@ -1,31 +1,33 @@
+let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH = null;
+
 export default function sketch(p) {
 
-    let players = [];
-    window['walker'] = new Walker();
     let iteration = 0;
-    let highestScore = 0;
+    let active = false;
 
     /**
      * Core P5.js functions
      */
-
     p.setup = function () {
 
         window['p'] = p;
 
-        p.createCanvas(900, 550);
+        p.createCanvas(WIDTH, HEIGHT);
 
         initNeat();
 
-        if (!USE_TRAINED_POP) {
+        startEvaluation();
 
-            for (let i = 0; i < 1; i++) {
-                neat.mutate();
-            }
+        if (active) {
+
+            p.loop();
+
+        } else {
+
+            p.noLoop();
 
         }
 
-        startEvaluation();
     };
 
     p.draw = function () {
@@ -33,20 +35,81 @@ export default function sketch(p) {
         p.clear();
         p.squareGrid();
 
-        if (iteration === ITERATIONS) {
-            endEvaluation();
-            iteration = 0;
+        if (active) {
+
+            if (iteration === iterations) {
+                endEvaluation();
+                iteration = 0;
+            }
+
+            window['players'].forEach((player) => {
+                player.update();
+                player.show();
+            });
+
+            window['walker'].update();
+            window['walker'].show();
+
+            iteration++;
+
+        } else {
+
+            p.textSize(44);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.fill(255);
+            p.text('Paused', WIDTH / 2, HEIGHT / 2);
+
         }
 
-        window.players.forEach((player) => {
-            player.update();
-            player.show();
-        });
+    };
 
-        window['walker'].update();
-        window['walker'].show();
+    p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
 
-        iteration++;
+        if (props.hasOwnProperty("status")) {
+
+            active = props.status;
+        }
+
+        if (props.hasOwnProperty("initNeat")) {
+
+            initNeat = props.initNeat;
+        }
+
+        if (props.hasOwnProperty("startEvaluation")) {
+
+            startEvaluation = props.startEvaluation;
+        }
+
+        if (props.hasOwnProperty("endEvaluation")) {
+
+            endEvaluation = props.endEvaluation;
+        }
+
+        if (props.hasOwnProperty("width")) {
+
+            WIDTH = props.width;
+        }
+
+        if (props.hasOwnProperty("height")) {
+
+            HEIGHT = props.height;
+        }
+
+        if (props.hasOwnProperty("iterations")) {
+
+            iterations = props.iterations;
+        }
+
+        if (props.hasOwnProperty("width")) {
+
+            WIDTH = props.width;
+        }
+
+        if (props.hasOwnProperty("height")) {
+
+            HEIGHT = props.height;
+        }
+
     };
 
     //-----------------------------------------------------------
@@ -58,15 +121,17 @@ export default function sketch(p) {
 
         p.stroke(204, 204, 204, 160);
         p.strokeWeight(1);
-        p.fill(255);
 
         for (let x = 0; x <= WIDTH / 20; x++) {
-            p.line(x * 20, 0, x * 20, HEIGHT);
+            p.line(x * 20 + 20, 0, x * 20 +20, HEIGHT);
         }
 
-        for (let y = 0; y <= HEIGHT / 20; y++) {
-            p.line(0, y * 20, WIDTH, y * 20);
+        for (let y = 0; y <= HEIGHT / 20 ; y++) {
+            p.line(0, y * 20 + 20, WIDTH, y * 20 + 20);
         }
+
+        p.fill(255, 255, 255, 100);
+        p.rect(0, 0, WIDTH, HEIGHT);
 
         p.noStroke();
     };
@@ -113,17 +178,6 @@ export default function sketch(p) {
         a = dy < 0 ? 2 * Math.PI - a : a;
 
         return a;
-    };
-
-    /**
-     * Set the walker to a new location
-     */
-    p.mouseClicked = function () {
-
-        if (p.mouseX >= 0 && p.mouseX <= WIDTH && p.mouseY >= 0 && p.mouseY <= HEIGHT) {
-            window['walker'].x = p.mouseX;
-            window['walker'].y = p.mouseY;
-        }
     };
 
 }

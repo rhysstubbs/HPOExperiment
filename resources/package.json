@@ -19,6 +19,7 @@
     "p5": "^0.7.3",
     "webcola": "^3.3.9",
     "d3": "^5.9.2",
+    "prop-types": "^15.7.2",
     "react-p5-wrapper": "^0.0.4"
   },
   "devDependencies": {
