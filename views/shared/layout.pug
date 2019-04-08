@@ -1,0 +1,28 @@
+doctype html
+html
+
+    head
+
+        title=title
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='charset' content='UTF-8')
+        meta(name='http-equiv' content='X-UA-Compatible')
+
+        link(rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png")
+        link(rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png")
+        link(rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png")
+        link(rel="manifest" href="/site.webmanifest")
+
+        // CSS Styles
+        link(rel='stylesheet', href='/assets/css/app.css')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+
+        // JavaScripts
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js")
+
+        script(src='/assets/js/vendor.js')
+        script(src='/assets/js/app.js')
+
+    body
+
+        block content
