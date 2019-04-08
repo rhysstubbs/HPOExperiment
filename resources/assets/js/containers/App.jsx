@@ -12,6 +12,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+const width = 900;
+const height = 500;
+
 class App extends React.Component {
 
     constructor(props) {
@@ -56,39 +59,35 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <Container>
+                <Row>
+                    <Col>
+                        <Simulation active={this.state.active}
+                                    width={width}
+                                    height={height}
+                        />
+                    </Col>
+                </Row>
 
-                <Container>
-                    <Row>
-                        <Col>
-                            <Simulation active={this.state.active}
-                                        width={900}
-                                        height={500}
-                            />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col>
+                        <h4>Generation: {this.state.generation}</h4>
+                        <h4>Average Score: {this.state.averageScore}</h4>
+                        <h4>Best Score: {this.state.fittestScore}</h4>
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col>
-                            <h4>Generation: {this.state.generation}</h4>
-                            <h4>Average Score: {this.state.averageScore}</h4>
-                            <h4>Best Score: {this.state.fittestScore}</h4>
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col>
+                        <Button
+                            onClick={this.handleClick}
+                            variant="primary">
+                            {this.state.active ? 'Pause' : 'Resume'}
+                        </Button>
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col>
-                            <Button
-                                onClick={this.handleClick}
-                                variant="primary">
-                                {this.state.active ? 'Pause' : 'Resume'}
-                            </Button>
-                        </Col>
-                    </Row>
-
-                </Container>
-
-            </div>
+            </Container>
         );
     }
 

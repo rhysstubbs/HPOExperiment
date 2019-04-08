@@ -122,7 +122,7 @@ class Simulation extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <P5Wrapper sketch={this.state.stateSketch}
                            status={this.props.active}
                            initNeat={this.initNeat}
@@ -132,7 +132,7 @@ class Simulation extends React.Component {
                            height={this.props.height}
                            iterations={this.ITERATIONS}
                 />
-            </div>
+            </React.Fragment>
         );
     }
 
