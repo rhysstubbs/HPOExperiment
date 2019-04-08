@@ -3,26 +3,19 @@ html {
 }
 
 body {
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column;
-      flex-direction: column;
-  -ms-flex-pack: center;
-      justify-content: center;
-  -ms-flex-align: center;
-      align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100% !important;
   background-color: #5D5C61 !important;
   color: #ffffff !important;
 }
 
 #field {
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: center;
-      justify-content: center;
-  -ms-flex-align: center;
-      align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 
