@@ -23,7 +23,8 @@
   "rules": {
     "no-console": "off",
     "no-undef": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-redeclare": "warn"
   },
   "settings": {
     "react": {

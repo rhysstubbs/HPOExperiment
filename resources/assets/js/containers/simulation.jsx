@@ -1,13 +1,46 @@
 import React from 'react';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from 'HPO/sketches/index';
-import 'neataptic';
 import Player from 'HPO/classes/player';
 import PropTypes from 'prop-types';
 import Walker from 'HPO/classes/walker';
+import {NEAT, CNE} from 'HPO/constants/algorithms';
+import Cookies from "js-cookie";
 
-const Neat = window['neataptic'].Neat;
-const Methods = window['neataptic'].methods;
+
+import 'HPO/libs/neataptic_vanilla';
+//import 'HPO/libs/neataptic_modified';
+//import 'neataptic';
+
+
+const ALGORITHM = Cookies.get('algorithm');
+
+let Neat = window['neataptic'].Neat;
+let Methods = window['neataptic'].methods;
+
+/*if (ALGORITHM === NEAT) {
+
+    console.log(NEAT);
+    import('neataptic').then((module) => {
+
+        console.log(module);
+
+        Neat = module.Neat;
+        Methods = module.methods;
+    });
+
+} else {
+    console.log(CNE);
+    import('HPO/libs/neataptic_modified').then((module) => {
+
+        console.log(module);
+
+        Neat = module.Neat;
+        Methods = module.methods;
+
+    });
+
+}*/
 
 class Simulation extends React.Component {
 
@@ -16,7 +49,7 @@ class Simulation extends React.Component {
         super(props);
 
         this.SCORE_RADIUS = 100;
-        this.PLAYER_AMOUNT = Math.round(2.3e-4 * props.width * props.height);
+        this.PLAYER_AMOUNT = 100; //Math.round(2.3e-4 * props.width * props.height);
         this.ITERATIONS = 250;
         this.MUTATION_RATE = 0.3;
         this.ELITISM = Math.round(0.1 * this.PLAYER_AMOUNT);
@@ -32,11 +65,16 @@ class Simulation extends React.Component {
 
         window['walker'] = new Walker(this.props.width / 2, this.props.height / 2, this.props.width, this.props.height);
         window['players'] = [];
+        window['generation'] = 0;
 
         window['neat'] = new Neat(
-            6, 1,
-            null,
-            {
+            6, // Input
+            1, // Output
+            null, // Fitness
+            { // Options
+                popsize: this.PLAYER_AMOUNT,
+                mutationRate: this.MUTATION_RATE,
+                elitism: this.ELITISM,
                 mutation: [
                     Methods.mutation.ADD_NODE,
                     Methods.mutation.SUB_NODE,
@@ -51,12 +89,20 @@ class Simulation extends React.Component {
                     Methods.mutation.SUB_SELF_CONN,
                     Methods.mutation.ADD_BACK_CONN,
                     Methods.mutation.SUB_BACK_CONN
-                ],
-                popsize: this.PLAYER_AMOUNT,
-                mutationRate: this.MUTATION_RATE,
-                elitism: this.ELITISM
+                ]
             }
         );
+
+        for (let i = 0; i <= this.props.maxGenerations; i++) {
+            window['results'].generations[i] = {
+                mutationTimes: [],
+                crossoverTimes: []
+            };
+        }
+
+        window['results']['populationSize'] = this.PLAYER_AMOUNT;
+        window['results']['mutationRate'] = this.MUTATION_RATE;
+        window['results']['elitism'] = this.ELITISM;
 
     };
 
@@ -81,7 +127,9 @@ class Simulation extends React.Component {
             detail: {
                 generation: window['neat'].generation,
                 averageScore: Math.round(window['neat'].getAverage()),
-                fittestScore: Math.round(window['neat'].getFittest().score)
+                fittestScore: Math.round(window['neat'].getFittest().score),
+                unfittestScore: Math.round(Math.min.apply(null, window['neat'].population.map(x => x.score))),
+                allScores: window['neat'].population.map((x => x.score))
             }
         });
 
@@ -97,25 +145,31 @@ class Simulation extends React.Component {
         // Init new pop
         let newPopulation = [];
 
-        // Elitism
+        /**
+         * ELITISM
+         */
         for (let i = 0; i < window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].population[i]);
         }
 
-        // Breed the next individuals
+        /**
+         * SELECTION (?) && CROSSOVER
+         */
         for (let i = 0; i < window['neat'].popsize - window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].getOffspring());
         }
 
         // Replace the old population with the new population
         window['neat'].population = newPopulation;
+
+        /**
+         * MUTATION
+         */
         window['neat'].mutate();
 
         window['neat'].generation++;
-
-        // Dispatch the event.
+        window['generation']++;
         window.dispatchEvent(event);
-
         this.startEvaluation();
     };
 
@@ -131,6 +185,7 @@ class Simulation extends React.Component {
                            width={this.props.width}
                            height={this.props.height}
                            iterations={this.ITERATIONS}
+                           maxGenerations={this.props.maxGenerations}
                 />
             </React.Fragment>
         );
@@ -141,13 +196,17 @@ class Simulation extends React.Component {
 Simulation.defaultProps = {
     active: true,
     width: 900,
-    height: 500
+    height: 500,
+    algorithm: NEAT,
+    maxGenerations: 100
 };
 
 Simulation.propTypes = {
     active: PropTypes.bool,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    algorithm: PropTypes.string,
+    maxGenerations: PropTypes.number
 };
 
 export default Simulation;

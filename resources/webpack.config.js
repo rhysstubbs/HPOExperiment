@@ -8,7 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
-const assetPath = '../';
+const assetPath = '../public/assets';
 const production = (process.env.NODE_ENV === 'production' || process.argv.includes('-p'));
 
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
     context: path.resolve(__dirname),
     entry: {
         '/js/app': [
+            'babel-polyfill',
             path.resolve(__dirname, 'assets/js/app.js'),
             path.resolve(__dirname, 'assets/scss/app.scss')
         ]
@@ -24,7 +25,7 @@ module.exports = {
         path: path.resolve(__dirname, '../public/assets'),
         filename: '[name].js?[contenthash:8]',
         chunkFilename: '[name].js?[contenthash:8]',
-        publicPath: ''
+        publicPath: path.resolve(__dirname, '../public/assets/js')
     },
     module: {
         rules: [
@@ -152,7 +153,8 @@ module.exports = {
                                 '@babel/react'
                             ],
                             plugins: [
-                                "@babel/plugin-proposal-class-properties"
+                                "@babel/plugin-proposal-class-properties",
+                                "@babel/plugin-syntax-dynamic-import"
                             ]
                         }
                     },
