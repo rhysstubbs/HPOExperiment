@@ -511,10 +511,7 @@ Network.prototype = {
 
     const diff = mutationFinish - mutationStart;
 
-    window['results']['generations'][window['generation']]['mutationTimes'].push({
-        method: method,
-        time: diff
-    });
+    window['results']['generations'][window['generation']]['mutationTimes'].push(diff);
 
   },
 
@@ -1194,7 +1191,9 @@ Network.crossOver = function (network1, network2, equal) {
     throw new Error("Networks don't have the same input/output size!");
   }
 
-  // Initialise offspring
+    const startCrossover = performance.now();
+
+    // Initialise offspring
   var offspring = new Network(network1.input, network1.output);
   offspring.connections = [];
   offspring.nodes = [];
@@ -1349,6 +1348,12 @@ Network.crossOver = function (network1, network2, equal) {
       }
     }
   }
+
+    const finishCrossover = performance.now();
+
+    const diff = finishCrossover - startCrossover;
+
+    window['results']['generations'][window['generation']]['crossoverTimes'].push(diff);
 
   return offspring;
 };

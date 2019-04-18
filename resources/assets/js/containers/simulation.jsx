@@ -100,10 +100,6 @@ class Simulation extends React.Component {
             };
         }
 
-        window['results']['populationSize'] = this.PLAYER_AMOUNT;
-        window['results']['mutationRate'] = this.MUTATION_RATE;
-        window['results']['elitism'] = this.ELITISM;
-
     };
 
     startEvaluation = () => {

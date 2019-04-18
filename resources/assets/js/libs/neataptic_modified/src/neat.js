@@ -131,8 +131,7 @@ Neat.prototype = {
     var parent1 = this.getParent();
     var parent2 = this.getParent();
 
-    return new Network(this.input, this.output);
-    //return Network.crossOver(parent1, parent2, this.equal);
+    return Network.crossOver(parent1, parent2, this.equal);
   },
 
   /**
