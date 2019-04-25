@@ -17,7 +17,6 @@
     "bootstrap": "^3.4.1",
     "p5": "^0.7.3",
     "prop-types": "^15.7.2",
-    "js-cookie": "^2.2.0",
     "react-p5-wrapper": "^0.0.4"
   },
   "devDependencies": {

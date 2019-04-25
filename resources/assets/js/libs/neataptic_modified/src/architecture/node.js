@@ -6,14 +6,28 @@ var methods = require('../methods/methods');
 var Connection = require('./connection');
 var config = require('../config');
 
+const hpjs = require('hyperparameters');
+
+
 /*******************************************************************************
                                          NODE
 *******************************************************************************/
 
+
+const getRandomActivation = () => {
+  const keys = Object.keys(methods.activation);
+  const index = Math.floor(Math.random() * options.length);
+  return methods.activation[keys[index]];
+};
+
 function Node (type) {
   this.bias = (type === 'input') ? 0 : Math.random() * 0.2 - 0.1;
 
-  this.squash = methods.activation.LOGISTIC; //methods.activation[Object.keys(methods.activation)[Math.floor(Math.random() * Object.keys(methods.activation).length)]];
+  /**
+   * Randomly pick an activation function instead of always using SIGMOID / LOGISTIC
+   */
+  this.squash = getRandomActivation();
+
   this.type = type || 'hidden';
   this.activation = 0;
   this.state = 0;
@@ -244,9 +258,9 @@ Node.prototype = {
           this.connections.self.weight = weight || 1;
         }
         connections.push(this.connections.self);
-      } else if (this.isProjectingTo(target)) {
+      } /**else if (this.isProjectingTo(target)) {
         throw new Error('Already projecting a connection to this node!');
-      } else {
+      } */else {
         let connection = new Connection(this, target, weight);
         target.connections.in.push(connection);
         this.connections.out.push(connection);

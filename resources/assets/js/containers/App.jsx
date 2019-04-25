@@ -11,9 +11,6 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Cookies from 'js-cookie';
-
-import {NEAT, CNE} from 'HPO/constants/algorithms';
 
 const WIDTH = 900;
 const HEIGHT = 500;
@@ -34,13 +31,8 @@ class App extends React.Component {
             fittestScore: null,
             maxGenerations: 100,
             dataStr: null,
-            fileName: null,
-            value: Cookies.get('algorithm') === NEAT ? NEAT : CNE
+            fileName: null
         };
-
-        // Set the algorithm to whatever was last used
-        Cookies.set('algorithm', this.state.value);
-
     }
 
     handleClick = () => {
@@ -50,16 +42,7 @@ class App extends React.Component {
         this.setState({
             active: !currentState
         });
-    };
 
-    algorithmChange = (event) => {
-
-        this.setState({value: event.target.value});
-
-        // Set the cookie and reload, the constructor handles the setting on load
-        Cookies.remove('algorithm');
-        Cookies.set('algorithm', event.target.value);
-        location.reload();
     };
 
     save = () => {
@@ -131,14 +114,6 @@ class App extends React.Component {
                         <h4>Average Score: {this.state.averageScore}</h4>
                         <h4>Best Score: {this.state.fittestScore}</h4>
                         <hr/>
-                    </Col>
-                    <Col>
-                        <select onChange={this.algorithmChange}
-                                value={this.state.value}
-                                className={'form-control'}>
-                            <option value={NEAT}>NEAT with EA</option>
-                            <option value={CNE}>NEAT with Random Search</option>
-                        </select>
                     </Col>
                 </Row>
 

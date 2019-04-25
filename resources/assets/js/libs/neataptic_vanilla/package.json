@@ -62,7 +62,7 @@
   "scripts": {
     "build": "npm run build:dist && npm run build:docs",
     "build:dist": "webpack",
-    "build:docs": "cd mkdocs && mkdocs build --site-dir ../docs && cd ../",
+    "build:docs": "cd mkdocs && mkdocs build --site-dir ../docs && cd ",
     "deploy": "npm run build && npm run test:dist && npm publish",
     "test:dist": "mocha test/dist.js test",
     "test:src": "mocha test/src.js test",

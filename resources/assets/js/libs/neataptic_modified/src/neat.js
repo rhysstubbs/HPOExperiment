@@ -163,6 +163,7 @@ Neat.prototype = {
    */
   mutate: function () {
     // Elitist genomes should not be included
+
     for (var i = 0; i < this.population.length - this.elitism; i++) {
       if (Math.random() <= this.mutationRate) {
         for (var j = 0; j < this.mutationAmount; j++) {
@@ -324,4 +325,5 @@ Neat.prototype = {
     this.population = population;
     this.popsize = population.length;
   }
+
 };

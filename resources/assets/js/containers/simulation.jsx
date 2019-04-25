@@ -5,42 +5,14 @@ import Player from 'HPO/classes/player';
 import PropTypes from 'prop-types';
 import Walker from 'HPO/classes/walker';
 import {NEAT, CNE} from 'HPO/constants/algorithms';
-import Cookies from "js-cookie";
 
 
 import 'HPO/libs/neataptic_vanilla';
 //import 'HPO/libs/neataptic_modified';
 //import 'neataptic';
 
-
-const ALGORITHM = Cookies.get('algorithm');
-
 let Neat = window['neataptic'].Neat;
 let Methods = window['neataptic'].methods;
-
-/*if (ALGORITHM === NEAT) {
-
-    console.log(NEAT);
-    import('neataptic').then((module) => {
-
-        console.log(module);
-
-        Neat = module.Neat;
-        Methods = module.methods;
-    });
-
-} else {
-    console.log(CNE);
-    import('HPO/libs/neataptic_modified').then((module) => {
-
-        console.log(module);
-
-        Neat = module.Neat;
-        Methods = module.methods;
-
-    });
-
-}*/
 
 class Simulation extends React.Component {
 
@@ -52,10 +24,9 @@ class Simulation extends React.Component {
         this.PLAYER_AMOUNT = 100; //Math.round(2.3e-4 * props.width * props.height);
         this.ITERATIONS = 250;
         this.MUTATION_RATE = 0.3;
-        this.ELITISM = Math.round(0.1 * this.PLAYER_AMOUNT);
+        this.ELITISM = 10;
 
         this.state = {
-            active: true,
             stateSketch: sketch,
         };
 
@@ -75,6 +46,7 @@ class Simulation extends React.Component {
                 popsize: this.PLAYER_AMOUNT,
                 mutationRate: this.MUTATION_RATE,
                 elitism: this.ELITISM,
+                selection: Methods.selection.TOURNAMENT,
                 mutation: [
                     Methods.mutation.ADD_NODE,
                     Methods.mutation.SUB_NODE,
@@ -83,12 +55,12 @@ class Simulation extends React.Component {
                     Methods.mutation.MOD_WEIGHT,
                     Methods.mutation.MOD_BIAS,
                     Methods.mutation.MOD_ACTIVATION,
-                    Methods.mutation.ADD_GATE,
-                    Methods.mutation.SUB_GATE,
                     Methods.mutation.ADD_SELF_CONN,
                     Methods.mutation.SUB_SELF_CONN,
+                    Methods.mutation.ADD_GATE,
+                    Methods.mutation.SUB_GATE,
                     Methods.mutation.ADD_BACK_CONN,
-                    Methods.mutation.SUB_BACK_CONN
+                    Methods.mutation.SUB_BACK_CONN,
                 ]
             }
         );
@@ -140,13 +112,14 @@ class Simulation extends React.Component {
 
         // Init new pop
         let newPopulation = [];
-
+        //console.log("initial", newPopulation);
         /**
          * ELITISM
          */
         for (let i = 0; i < window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].population[i]);
         }
+        //console.log("elitism", newPopulation);
 
         /**
          * SELECTION (?) && CROSSOVER
@@ -154,6 +127,8 @@ class Simulation extends React.Component {
         for (let i = 0; i < window['neat'].popsize - window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].getOffspring());
         }
+        // console.log("crossover", newPopulation);
+
 
         // Replace the old population with the new population
         window['neat'].population = newPopulation;
@@ -162,9 +137,9 @@ class Simulation extends React.Component {
          * MUTATION
          */
         window['neat'].mutate();
-
         window['neat'].generation++;
         window['generation']++;
+
         window.dispatchEvent(event);
         this.startEvaluation();
     };

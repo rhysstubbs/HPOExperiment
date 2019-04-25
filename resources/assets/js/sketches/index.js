@@ -1,9 +1,8 @@
-let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH, maxGenerations = null;
+let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH, maxGenerations, active = null;
 
 export default function sketch(p) {
 
     let iteration = 0;
-    let active = false;
 
     /**
      * Core P5.js functions
@@ -66,8 +65,6 @@ export default function sketch(p) {
             p.textAlign(p.CENTER, p.CENTER);
             p.fill(255);
             p.text('Paused', WIDTH / 2, HEIGHT / 2);
-            p.noLoop();
-
         }
     };
 
