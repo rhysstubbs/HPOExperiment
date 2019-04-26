@@ -21,12 +21,9 @@ const getRandomActivation = () => {
 };
 
 function Node (type) {
-  this.bias = (type === 'input') ? 0 : Math.random() * 0.2 - 0.1;
+  this.bias = 0;//(type === 'input') ? 0 : Math.random() * 0.2 - 0.1;
 
-  /**
-   * Randomly pick an activation function instead of always using SIGMOID / LOGISTIC
-   */
-  this.squash = getRandomActivation();
+  this.squash = methods.activation.LOGISTIC;
 
   this.type = type || 'hidden';
   this.activation = 0;

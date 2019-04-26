@@ -11,7 +11,7 @@ var config = require('../config');
 *******************************************************************************/
 
 function Node (type) {
-  this.bias = 0; (type === 'input') ? 0 : Math.random() * 0.2 - 0.1;
+  this.bias = 0; //(type === 'input') ? 0 : Math.random() * 0.2 - 0.1;
   this.squash = methods.activation.LOGISTIC;
   this.type = type || 'hidden';
 
