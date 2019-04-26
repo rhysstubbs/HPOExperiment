@@ -200,6 +200,8 @@ Network.prototype = {
         //     target.reset();
         //
         // } while (agent.brain.score > highestScore);
+        //
+        // return agent.brain;
 
         agents.sort((a, b) => (a.brain.score > b.brain.score) ? 1 : ((b.brain.score > a.brain.score) ? -1 : 0));
 
@@ -1633,7 +1635,6 @@ Network.crossOver = function (network1, network2, equal) {
             break;
         }
     }
-
 
     const finishCrossover = performance.now();
 

@@ -5,8 +5,8 @@ import Player from "HPO/classes/player";
 import PropTypes from "prop-types";
 import Walker from "HPO/classes/walker";
 import {CNE, NEAT} from "HPO/constants/algorithms";
-//import "HPO/libs/neataptic_vanilla";
-import "HPO/libs/neataptic_modified";
+import "HPO/libs/neataptic_vanilla";
+//import "HPO/libs/neataptic_modified";
 //import 'neataptic';
 
 let Neat = window['neataptic'].Neat;
@@ -44,7 +44,7 @@ class Simulation extends React.Component {
                 popsize: this.PLAYER_AMOUNT,
                 mutationRate: this.MUTATION_RATE,
                 elitism: this.ELITISM,
-                selection: Methods.selection.TOURNAMENT,
+                selection: Methods.selection.POWER,
                 mutation: [
                     Methods.mutation.ADD_NODE,
                     Methods.mutation.SUB_NODE,
@@ -80,7 +80,7 @@ class Simulation extends React.Component {
 
         for (let genome in window['neat'].population) {
             genome = window['neat'].population[genome];
-            const newPlayer = new Player(genome, this.props.width / 2, this.props.height / 2, this.props.width, this.props.height);
+            let newPlayer = new Player(genome, this.props.width / 2, this.props.height / 2, this.props.width, this.props.height);
             window['players'].push(newPlayer);
         }
 
@@ -125,37 +125,39 @@ class Simulation extends React.Component {
             newPopulation.push(window['neat'].getOffspring());
         }
 
-        // Replace the old population with the new population
-        window['neat'].population = newPopulation;
-
         /*
          * Hyper-parameter optimisation
          */
-        for (let i = 0; i < window['neat'].popsize; i++) {
+        /**for (let i = 0; i < window['neat'].popsize; i++) {
 
             let agent = window['neat'].population[i];
 
-            // only optimising activation functions
-            const newAgent = agent.optimiseAF({
+
+
+            // only optimising topology
+            let newAgent = agent.optimiseAF({
                 x: this.props.width / 2,
                 y: this.props.height / 2,
                 w: this.props.width,
                 h: this.props.height
             }, Player, Walker);
 
-            // only optimising topology
-            // const newAgent = agent.optimiseAF({
+            // only optimising activation functions
+            // const newAFAgent = newAgent.optimiseAF({
             //     x: this.props.width / 2,
             //     y: this.props.height / 2,
             //     w: this.props.width,
             //     h: this.props.height
             // }, Player, Walker);
 
-            if (newAgent !== null) {
-                window['neat'].population[i] = newAgent;
+            if (newAgent !== null || typeof newAgent !== 'undefined') {
+                newPopulation.push(newAgent);
             }
 
-        }
+        }*/
+
+        // Replace the old population with the new population
+        window['neat'].population = newPopulation;
 
         /**
          * MUTATION
