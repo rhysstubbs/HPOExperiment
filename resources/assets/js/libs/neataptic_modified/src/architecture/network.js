@@ -9,6 +9,10 @@ var config = require('../config');
 var Neat = require('../neat');
 var Node = require('./node');
 
+//var Player = require("HPO/classes/player");
+//var Walker = require("HPO/classes/walker");
+
+
 /* Easier variable naming */
 var mutation = methods.mutation;
 
@@ -112,6 +116,94 @@ Network.prototype = {
         }
 
         return output;
+    },
+
+    optimiseAF: function (options, Player, Walker) {
+
+        const getRandomActivation = () => {
+            const keys = Object.keys(methods.activation);
+            const index = Math.floor(Math.random() * keys.length);
+            return methods.activation[keys[index]];
+        };
+
+        let target = new Walker(options.x, options.y, options.w, options.h);
+        let agent = new Player(this, options.x, options.y, options.w, options.h);
+
+        let agents = [];
+
+        for (let i = 0; i <= 10; i++) {
+            agents.push(agent);
+        }
+
+        for (let i = 10; i <= 10; i++) {
+
+            agents[i].brain.nodes.forEach((node) => node.squash = getRandomActivation());
+
+            for (let j = 0; j <= 250; j++) {
+                target.update();
+                agents[i].updateMod(target.x, target.y, target.vx, target.vy);
+            }
+
+            target.reset();
+        }
+
+        agents.sort((a, b) => (a.brain.score > b.brain.score) ? 1 : ((b.brain.score > a.brain.score) ? -1 : 0));
+
+        return agents[0].brain;
+    },
+
+    optimiseNT: function (options, Player, Walker) {
+
+        let target = new Walker(options.x, options.y, options.w, options.h);
+        let agent = new Player(this, options.x, options.y, options.w, options.h);
+
+        let agents = [];
+
+        for (let i = 0; i <= 10; i++) {
+            agents.push(agent);
+        }
+
+        for (let i = 0; i <= 10; i++) {
+
+            const add = (Math.random() * 11);
+            const del = (Math.random() * 11);
+
+            for (let ii = 0; ii <= add; ii++) {
+                agents[i].brain.mutate(methods.mutation.ADD_NODE);
+            }
+
+            for (let jj = 0; jj <= del; jj++) {
+                agents[i].brain.mutate(methods.mutation.SUB_NODE);
+            }
+
+            for (let j = 0; j <= 250; j++) {
+                agents[i].updateMod(target.x, target.y, target.vx, target.vy);
+                target.update();
+            }
+
+            target.reset();
+
+        }
+
+        // let highestScore = agent.brain.score;
+        //
+        // do {
+        //
+        //     highestScore = agent.brain.score;
+        //     agent.brain.mutate(methods.mutation.ADD_NODE);
+        //
+        //     for (let j = 0; j <= 250; j++) {
+        //         agent.updateMod(target.x, target.y, target.vx, target.vy);
+        //         target.update();
+        //     }
+        //
+        //     target.reset();
+        //
+        // } while (agent.brain.score > highestScore);
+
+        agents.sort((a, b) => (a.brain.score > b.brain.score) ? 1 : ((b.brain.score > a.brain.score) ? -1 : 0));
+
+        return agents[0].brain;
     },
 
     /**
@@ -328,9 +420,6 @@ Network.prototype = {
                 // Insert the new node right before the old connection.to
                 var toIndex = this.nodes.indexOf(connection.to);
                 var node = new Node('hidden');
-
-                // Random squash function
-                node.mutate(mutation.MOD_ACTIVATION);
 
                 // Place it in this.nodes
                 var minBound = Math.min(toIndex, this.nodes.length - this.output);
@@ -1151,7 +1240,12 @@ Network.prototype = {
         }
 
         return [activations, states, conns];
+    },
+
+    getHiddenNodeCount: function () {
+        return this.nodes.length - this.input - this.output;
     }
+
 };
 
 /**
@@ -1238,14 +1332,7 @@ Network.crossOver = function (network1, network2, equal) {
     let offspring;
 
     // Determine crossover method
-    // const probability = Math.floor(Math.random() * 11);
     let crossoverMethod;
-
-    // if (probability <= 11) {
-    //     crossoverMethod = methods.crossover.SINGLE_POINT;
-    // } else {
-    //     crossoverMethod = methods.crossover.UNIFORM;
-    // }
 
     crossoverMethod = methods.crossover.UNIFORM;
 

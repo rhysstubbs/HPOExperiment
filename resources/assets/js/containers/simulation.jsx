@@ -1,14 +1,12 @@
-import React from 'react';
-import P5Wrapper from 'react-p5-wrapper';
-import sketch from 'HPO/sketches/index';
-import Player from 'HPO/classes/player';
-import PropTypes from 'prop-types';
-import Walker from 'HPO/classes/walker';
-import {NEAT, CNE} from 'HPO/constants/algorithms';
-
-
-import 'HPO/libs/neataptic_vanilla';
-//import 'HPO/libs/neataptic_modified';
+import React from "react";
+import P5Wrapper from "react-p5-wrapper";
+import sketch from "HPO/sketches/index";
+import Player from "HPO/classes/player";
+import PropTypes from "prop-types";
+import Walker from "HPO/classes/walker";
+import {CNE, NEAT} from "HPO/constants/algorithms";
+//import "HPO/libs/neataptic_vanilla";
+import "HPO/libs/neataptic_modified";
 //import 'neataptic';
 
 let Neat = window['neataptic'].Neat;
@@ -21,7 +19,7 @@ class Simulation extends React.Component {
         super(props);
 
         this.SCORE_RADIUS = 100;
-        this.PLAYER_AMOUNT = 100; //Math.round(2.3e-4 * props.width * props.height);
+        this.PLAYER_AMOUNT = 100;
         this.ITERATIONS = 250;
         this.MUTATION_RATE = 0.3;
         this.ELITISM = 10;
@@ -110,16 +108,15 @@ class Simulation extends React.Component {
         // Sort the population by score
         window['neat'].sort();
 
-        // Init new pop
+        // Initialise new population
         let newPopulation = [];
-        //console.log("initial", newPopulation);
+
         /**
          * ELITISM
          */
         for (let i = 0; i < window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].population[i]);
         }
-        //console.log("elitism", newPopulation);
 
         /**
          * SELECTION (?) && CROSSOVER
@@ -127,11 +124,38 @@ class Simulation extends React.Component {
         for (let i = 0; i < window['neat'].popsize - window['neat'].elitism; i++) {
             newPopulation.push(window['neat'].getOffspring());
         }
-        // console.log("crossover", newPopulation);
-
 
         // Replace the old population with the new population
         window['neat'].population = newPopulation;
+
+        /*
+         * Hyper-parameter optimisation
+         */
+        for (let i = 0; i < window['neat'].popsize; i++) {
+
+            let agent = window['neat'].population[i];
+
+            // only optimising activation functions
+            const newAgent = agent.optimiseAF({
+                x: this.props.width / 2,
+                y: this.props.height / 2,
+                w: this.props.width,
+                h: this.props.height
+            }, Player, Walker);
+
+            // only optimising topology
+            // const newAgent = agent.optimiseAF({
+            //     x: this.props.width / 2,
+            //     y: this.props.height / 2,
+            //     w: this.props.width,
+            //     h: this.props.height
+            // }, Player, Walker);
+
+            if (newAgent !== null) {
+                window['neat'].population[i] = newAgent;
+            }
+
+        }
 
         /**
          * MUTATION

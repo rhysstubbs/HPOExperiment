@@ -16,7 +16,7 @@ const hpjs = require('hyperparameters');
 
 const getRandomActivation = () => {
   const keys = Object.keys(methods.activation);
-  const index = Math.floor(Math.random() * options.length);
+  const index = Math.floor(Math.random() * keys.length);
   return methods.activation[keys[index]];
 };
 

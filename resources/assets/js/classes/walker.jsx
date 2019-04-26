@@ -46,6 +46,7 @@ class Walker {
             this.vy = -this.vy;
             this.angle += Math.PI;
         }
+
     }
 
     reset() {
