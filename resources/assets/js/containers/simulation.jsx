@@ -5,8 +5,9 @@ import Player from "HPO/classes/player";
 import PropTypes from "prop-types";
 import Walker from "HPO/classes/walker";
 import {CNE, NEAT} from "HPO/constants/algorithms";
-import "HPO/libs/neataptic_vanilla";
-//import "HPO/libs/neataptic_modified";
+
+//import "HPO/libs/neataptic_vanilla";
+import "HPO/libs/neataptic_modified";
 //import 'neataptic';
 
 let Neat = window['neataptic'].Neat;

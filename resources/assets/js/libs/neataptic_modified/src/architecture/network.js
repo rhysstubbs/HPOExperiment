@@ -34,64 +34,76 @@ function Network(input, output, createTopology = true) {
     this.gates = [];
     this.selfconns = [];
 
-    this.maxHiddenNodes = 10;
     // Regularization
     this.dropout = 0;
 
-    if (createTopology) {
+    for (let i = 0; i < this.input + this.output; i++) {
+        const type = i < this.input ? 'input' : 'output';
+        this.nodes.push(new Node(type));
+    }
 
-        for (let i = 0; i < this.input + this.output; i++) {
-            const type = i < this.input ? 'input' : 'output';
-            this.nodes.push(new Node(type));
-        }
+    for (let i = 0; i < this.input; i++) {
+        for (let j = this.input; j < this.output + this.input; j++) {
 
-        const hiddenNodes = Math.floor(Math.random() * this.maxHiddenNodes);
-
-        if (hiddenNodes > 0) { // Create hidden nodes and connect all layers
-
-            for (let i = 0; i <= hiddenNodes; i++) {
-
-                const node = new Node('hidden');
-                this.nodes.splice(this.nodes.length - this.output, 0, node);
-            }
-
-
-            for (let i = 0; i <= this.input; i++) {
-                for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
-
-                    const inputNode = this.nodes[i];
-                    const hiddenNode = this.nodes[j];
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-
-                    this.connect(inputNode, hiddenNode, weight);
-                }
-            }
-
-            for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
-
-                for (let i = this.nodes.length - this.output; i <= this.nodes.length - 1; i++) {
-
-                    const hiddenNode = this.nodes[j];
-                    const outputNode = this.nodes[i];
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-
-                    this.connect(hiddenNode, outputNode, weight);
-
-                }
-
-            }
-
-        } else { // Connect input nodes with output nodes directly
-
-            for (let i = 0; i < this.input; i++) {
-                for (let j = this.input; j < this.output + this.input; j++) {
-
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-                    this.connect(this.nodes[i], this.nodes[j], weight);
-                }
-            }
+            const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
+            this.connect(this.nodes[i], this.nodes[j], weight);
         }
     }
+
+    // if (createTopology) {
+    //
+    //     for (let i = 0; i < this.input + this.output; i++) {
+    //         const type = i < this.input ? 'input' : 'output';
+    //         this.nodes.push(new Node(type));
+    //     }
+    //
+    //     const hiddenNodes = Math.floor(Math.random() * this.maxHiddenNodes);
+    //
+    //     if (hiddenNodes > 0) { // Create hidden nodes and connect all layers
+    //
+    //         for (let i = 0; i <= hiddenNodes; i++) {
+    //
+    //             const node = new Node('hidden');
+    //             this.nodes.splice(this.nodes.length - this.output, 0, node);
+    //         }
+    //
+    //
+    //         for (let i = 0; i <= this.input; i++) {
+    //             for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
+    //
+    //                 const inputNode = this.nodes[i];
+    //                 const hiddenNode = this.nodes[j];
+    //                 const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
+    //
+    //                 this.connect(inputNode, hiddenNode, weight);
+    //             }
+    //         }
+    //
+    //         for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
+    //
+    //             for (let i = this.nodes.length - this.output; i <= this.nodes.length - 1; i++) {
+    //
+    //                 const hiddenNode = this.nodes[j];
+    //                 const outputNode = this.nodes[i];
+    //                 const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
+    //
+    //                 this.connect(hiddenNode, outputNode, weight);
+    //
+    //             }
+    //
+    //         }
+    //
+    //     } else { // Connect input nodes with output nodes directly
+    //
+    //         for (let i = 0; i < this.input; i++) {
+    //             for (let j = this.input; j < this.output + this.input; j++) {
+    //
+    //                 const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
+    //                 this.connect(this.nodes[i], this.nodes[j], weight);
+    //             }
+    //         }
+    //     }
+    // }
 
 }
 

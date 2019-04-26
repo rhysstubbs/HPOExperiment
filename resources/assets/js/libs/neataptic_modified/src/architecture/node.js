@@ -26,7 +26,7 @@ function Node (type) {
   /**
    * Randomly pick an activation function instead of always using SIGMOID / LOGISTIC
    */
-  this.squash = getRandomActivation();
+  this.squash = methods.activation.LOGISTIC; //getRandomActivation();
 
   this.type = type || 'hidden';
   this.activation = 0;
