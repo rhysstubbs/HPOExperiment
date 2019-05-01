@@ -4,7 +4,7 @@
 
 // Config
 var config = {
-  warnings: true
+  warnings: false
 };
 
 /* Export */

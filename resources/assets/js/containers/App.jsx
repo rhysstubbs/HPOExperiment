@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Cookies from 'js-cookie';
 
 const WIDTH = 900;
 const HEIGHT = 500;
@@ -29,10 +30,24 @@ class App extends React.Component {
             generation: null,
             averageScore: null,
             fittestScore: null,
+            unfittestScore: null,
             maxGenerations: 100,
             dataStr: null,
-            fileName: null
+            fileName: null,
+            sampleCountReached: false
         };
+
+        let s = Cookies.get('sample');
+
+        if (typeof s === 'undefined' || s === null) {
+
+            Cookies.set('sample', 0);
+
+        } else if (s === 29) {
+
+            this.state.sampleCountReached = true;
+
+        }
     }
 
     handleClick = () => {
@@ -45,7 +60,7 @@ class App extends React.Component {
 
     };
 
-    save = () => {
+    save = (e) => {
 
         const results = window['results'];
 
@@ -59,6 +74,16 @@ class App extends React.Component {
                 dataStr: dataStr,
                 fileName: "results.json"
             });
+
+            // let a = document.createElement('a');
+            // document.body.appendChild(a);
+            // a.download = this.state.fileName;
+            // a.href = this.state.dataStr;
+            // a.click();
+            //
+            // if (e.detail.reload) {
+            //     location.reload();
+            // }
 
         } else {
 
@@ -87,11 +112,11 @@ class App extends React.Component {
 
         });
 
-
     };
 
     componentDidMount = () => {
         window.addEventListener("generationUpdate", this.update);
+        window.addEventListener("saveJSON", this.save);
     };
 
     render() {
@@ -99,12 +124,12 @@ class App extends React.Component {
             <Container>
                 <Row>
                     <Col>
-                        <Simulation active={this.state.active}
+                        {!this.state.sampleCountReached ? <Simulation active={this.state.active}
                                     width={WIDTH}
                                     height={HEIGHT}
                                     algorithm={this.state.value}
                                     maxGenerations={this.state.maxGenerations}
-                        />
+                        /> : null}
                     </Col>
                 </Row>
 
@@ -113,6 +138,7 @@ class App extends React.Component {
                         <h4>Generation: {this.state.generation}</h4>
                         <h4>Average Score: {this.state.averageScore}</h4>
                         <h4>Best Score: {this.state.fittestScore}</h4>
+                        <h4>Lowest Score: {this.state.unfittestScore}</h4>
                         <hr/>
                     </Col>
                 </Row>

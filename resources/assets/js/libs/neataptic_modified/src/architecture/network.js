@@ -9,10 +9,6 @@ var config = require('../config');
 var Neat = require('../neat');
 var Node = require('./node');
 
-//var Player = require("HPO/classes/player");
-//var Walker = require("HPO/classes/walker");
-
-
 /* Easier variable naming */
 var mutation = methods.mutation;
 
@@ -34,62 +30,19 @@ function Network(input, output, createTopology = true) {
     this.gates = [];
     this.selfconns = [];
 
-    this.maxHiddenNodes = 10;
     // Regularization
     this.dropout = 0;
 
-    if (createTopology) {
+    for (let i = 0; i < this.input + this.output; i++) {
+        const type = i < this.input ? 'input' : 'output';
+        this.nodes.push(new Node(type));
+    }
 
-        for (let i = 0; i < this.input + this.output; i++) {
-            const type = i < this.input ? 'input' : 'output';
-            this.nodes.push(new Node(type));
-        }
+    for (let i = 0; i < this.input; i++) {
+        for (let j = this.input; j < this.output + this.input; j++) {
 
-        const hiddenNodes = Math.floor(Math.random() * this.maxHiddenNodes);
-
-        if (hiddenNodes > 0) { // Create hidden nodes and connect all layers
-
-            for (let i = 0; i <= hiddenNodes; i++) {
-
-                const node = new Node('hidden');
-                this.nodes.splice(this.nodes.length - this.output, 0, node);
-            }
-
-
-            for (let i = 0; i <= this.input; i++) {
-                for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
-
-                    const inputNode = this.nodes[i];
-                    const hiddenNode = this.nodes[j];
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-
-                    this.connect(inputNode, hiddenNode, weight);
-                }
-            }
-
-            for (let j = this.input; j <= (this.nodes.length - 1) - this.output; j++) {
-
-                for (let i = this.nodes.length - this.output; i <= this.nodes.length - 1; i++) {
-
-                    const hiddenNode = this.nodes[j];
-                    const outputNode = this.nodes[i];
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-
-                    this.connect(hiddenNode, outputNode, weight);
-
-                }
-
-            }
-
-        } else { // Connect input nodes with output nodes directly
-
-            for (let i = 0; i < this.input; i++) {
-                for (let j = this.input; j < this.output + this.input; j++) {
-
-                    const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
-                    this.connect(this.nodes[i], this.nodes[j], weight);
-                }
-            }
+            const weight = Math.random() * this.input * Math.sqrt(2 / this.input);
+            this.connect(this.nodes[i], this.nodes[j], weight);
         }
     }
 
@@ -157,55 +110,86 @@ Network.prototype = {
         let target = new Walker(options.x, options.y, options.w, options.h);
         let agent = new Player(this, options.x, options.y, options.w, options.h);
 
-        let agents = [];
+        // let agents = [];
 
-        for (let i = 0; i <= 10; i++) {
-            agents.push(agent);
-        }
+        // for (let i = 0; i < 10; i++) {
+        //     agents.push(agent);
+        // }
 
-        for (let i = 0; i <= 10; i++) {
+        // for (let i = 1; i < 10; i++) {
 
-            const add = (Math.random() * 11);
-            const del = (Math.random() * 11);
+        //     console.log(agents[i].brain);
+        //     let brain = agents[i].brain;
 
-            for (let ii = 0; ii <= add; ii++) {
-                agents[i].brain.mutate(methods.mutation.ADD_NODE);
-            }
+        //     let hiddenNodes = brain.nodes.length - (brain.input + brain.output);
 
-            for (let jj = 0; jj <= del; jj++) {
-                agents[i].brain.mutate(methods.mutation.SUB_NODE);
-            }
+        //     if (hiddenNodes > 0) {
 
-            for (let j = 0; j <= 250; j++) {
-                agents[i].updateMod(target.x, target.y, target.vx, target.vy);
-                target.update();
-            }
+        //         // has hidden nodes
 
-            target.reset();
+        //         const add = Math.floor((Math.random() * (3 - 1) + 2));
 
-        }
+        //         for (let k = 0; k <= add; k++) {
+        //             brain.mutate(methods.mutation.ADD_NODE);
+        //         }
 
-        // let highestScore = agent.brain.score;
-        //
-        // do {
-        //
-        //     highestScore = agent.brain.score;
-        //     agent.brain.mutate(methods.mutation.ADD_NODE);
-        //
+        //         const sub = Math.floor((Math.random() * add) + 1);
+
+        //         for (let k = 0; k <= sub; k++) {
+        //             brain.mutate(methods.mutation.SUB_NODE);
+        //         }
+
+        //         agents[i].brain = brain;
+
+        //     } else {
+        //         // no hidden nodes
+
+        //         const add = Math.floor((Math.random() * (3 - 1) + 2));
+
+        //         for (let k = 0; k <= add; k++) {
+        //             brain.mutate(methods.mutation.ADD_NODE);
+        //         }
+
+        //         agents[i].brain = brain;
+
+        //     }
+
         //     for (let j = 0; j <= 250; j++) {
-        //         agent.updateMod(target.x, target.y, target.vx, target.vy);
+        //         agents[i].updateMod(target.x, target.y, target.vx, target.vy);
         //         target.update();
         //     }
-        //
+
         //     target.reset();
-        //
-        // } while (agent.brain.score > highestScore);
-        //
-        // return agent.brain;
 
-        agents.sort((a, b) => (a.brain.score > b.brain.score) ? 1 : ((b.brain.score > a.brain.score) ? -1 : 0));
+        // }
+        const limit = 3;
+        let highestScore = agent.brain.score;
+        let ii = 0;
+        do {
+            
+            highestScore = agent.brain.score;
 
-        return agents[0].brain;
+            if (Math.random() >= 0.5) {
+                agent.brain.mutate(methods.mutation.ADD_NODE);
+            } else {
+                agent.brain.mutate(methods.mutation.SUB_NODE);
+            }
+        
+            for (let j = 0; j <= 250; j++) {
+                agent.updateMod(target.x, target.y, target.vx, target.vy);
+                target.update();                
+            }
+        
+            target.reset();
+            ii++;
+            
+        } while (agent.brain.score > highestScore && limit !== ii);
+        
+        return agent.brain;
+
+        //agents.sort((a, b) => (a.brain.score > b.brain.score) ? 1 : ((b.brain.score > a.brain.score) ? -1 : 0));
+
+        //return agents[0].brain;
     },
 
     /**
@@ -1371,7 +1355,6 @@ Network.crossOver = function (network1, network2, equal) {
 
             let crossoverPoint = getRandomInt(minNodes, maxNodes);
 
-            console.log(minNodes, maxNodes, crossoverPoint);
 
             const networkOneNodes = network1.nodes.slice(crossoverPoint, network1.nodes.length - network1.output);
             const networkTwoNodes = network2.nodes.slice(crossoverPoint, network2.nodes.length - network2.output);

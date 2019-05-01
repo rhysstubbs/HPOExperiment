@@ -5,8 +5,8 @@ import Player from "HPO/classes/player";
 import PropTypes from "prop-types";
 import Walker from "HPO/classes/walker";
 import {CNE, NEAT} from "HPO/constants/algorithms";
-import "HPO/libs/neataptic_vanilla";
-//import "HPO/libs/neataptic_modified";
+//import "HPO/libs/neataptic_vanilla";
+import "HPO/libs/neataptic_modified";
 //import 'neataptic';
 
 let Neat = window['neataptic'].Neat;
@@ -65,8 +65,11 @@ class Simulation extends React.Component {
 
         for (let i = 0; i <= this.props.maxGenerations; i++) {
             window['results'].generations[i] = {
+                crossoverTimes: [],
                 mutationTimes: [],
-                crossoverTimes: []
+                optimiseAFTimes: [],
+                optimiseNTimes: [],
+                totalTimes: []
             };
         }
 
@@ -84,18 +87,26 @@ class Simulation extends React.Component {
             window['players'].push(newPlayer);
         }
 
+        console.log(window['neat'].population);
+
         window['walker'].reset();
     };
 
     endEvaluation = () => {
 
+         // Sort the population by score
+         window['neat'].sort();
+         
+        const fittestAgent = window['neat'].getFittest();
+                 
         let event = new CustomEvent('generationUpdate', {
             detail: {
                 generation: window['neat'].generation,
                 averageScore: Math.round(window['neat'].getAverage()),
-                fittestScore: Math.round(window['neat'].getFittest().score),
+                fittestScore: Math.round(fittestAgent.score),
                 unfittestScore: Math.round(Math.min.apply(null, window['neat'].population.map(x => x.score))),
-                allScores: window['neat'].population.map((x => x.score))
+                allScores: window['neat'].population.map(x => x.score),
+                fittestTopology: fittestAgent
             }
         });
 
@@ -128,33 +139,37 @@ class Simulation extends React.Component {
         /*
          * Hyper-parameter optimisation
          */
-        /**for (let i = 0; i < window['neat'].popsize; i++) {
+        for (let i = 0; i < window['neat'].popsize; i++) {
 
             let agent = window['neat'].population[i];
-
-
+            const startHPO = performance.now();
 
             // only optimising topology
-            let newAgent = agent.optimiseAF({
+            let newAgent = agent.optimiseNT({
                 x: this.props.width / 2,
                 y: this.props.height / 2,
                 w: this.props.width,
                 h: this.props.height
             }, Player, Walker);
 
-            // only optimising activation functions
-            // const newAFAgent = newAgent.optimiseAF({
-            //     x: this.props.width / 2,
-            //     y: this.props.height / 2,
-            //     w: this.props.width,
-            //     h: this.props.height
-            // }, Player, Walker);
+            const finishHPO = performance.now();
+            const diff = finishHPO - startHPO;
+
+            window['results']['generations'][window['generation']]['optimiseAFTimes'].push(diff);
 
             if (newAgent !== null || typeof newAgent !== 'undefined') {
-                newPopulation.push(newAgent);
+                window['neat'].population[i] = newAgent;
+            } else {
+                window['neat'].population[i] = agent;
             }
+        }
 
-        }*/
+         /**
+         * SELECTION (?) && CROSSOVER
+         */
+        for (let i = 0; i < window['neat'].popsize - window['neat'].elitism; i++) {
+            newPopulation.push(window['neat'].getOffspring());
+        }
 
         // Replace the old population with the new population
         window['neat'].population = newPopulation;
@@ -169,7 +184,6 @@ class Simulation extends React.Component {
         window.dispatchEvent(event);
         this.startEvaluation();
     };
-
 
     render() {
         return (

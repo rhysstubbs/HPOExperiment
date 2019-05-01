@@ -1,4 +1,7 @@
+import Cookies from 'js-cookie';
+
 let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH, maxGenerations, active = null;
+let startGen = 0;
 
 export default function sketch(p) {
 
@@ -34,9 +37,19 @@ export default function sketch(p) {
         p.clear();
         p.squareGrid();
 
+        if (startGen === 0) {
+            startGen = performance.now();
+        }
+        
         if (active && window['generation'] <= maxGenerations) {
 
             if (iteration === iterations) {
+                let finishGen = performance.now();
+                let diff = finishGen - startGen;
+                
+                window['results'].generations[window['generation']].totalTimes.push(diff);
+                startGen = 0;
+
                 endEvaluation();
                 iteration = 0;
             }
@@ -58,6 +71,15 @@ export default function sketch(p) {
             p.fill(255);
             p.text('Complete', WIDTH / 2, HEIGHT / 2);
             p.noLoop();
+
+            let sampleCount = Cookies.get('sample') + 1;
+            Cookies.set('sample', sampleCount);
+            let event = new CustomEvent('saveJSON', {
+                detail: {
+                    reload: true
+                }
+            });
+            window.dispatchEvent(event);
 
         } else {
 

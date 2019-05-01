@@ -208,13 +208,8 @@ Neat.prototype = {
      * Returns the fittest genome of the current population
      */
     getFittest: function () {
-        // Check if evaluated
-        if (typeof this.population[this.population.length - 1].score === 'undefined') {
-            this.evaluate();
-        }
-        if (this.population[0].score < this.population[1].score) {
-            this.sort();
-        }
+
+        this.sort();
 
         return this.population[0];
     },
