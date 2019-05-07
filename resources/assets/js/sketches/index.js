@@ -1,9 +1,8 @@
-let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH = null;
+let initNeat, startEvaluation, endEvaluation, iterations, HEIGHT, WIDTH, maxGenerations, active = null;
 
 export default function sketch(p) {
 
     let iteration = 0;
-    let active = false;
 
     /**
      * Core P5.js functions
@@ -35,7 +34,7 @@ export default function sketch(p) {
         p.clear();
         p.squareGrid();
 
-        if (active) {
+        if (active && window['generation'] <= maxGenerations) {
 
             if (iteration === iterations) {
                 endEvaluation();
@@ -52,15 +51,21 @@ export default function sketch(p) {
 
             iteration++;
 
+        } else if (active && window['generation'] > maxGenerations) {
+
+            p.textSize(44);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.fill(255);
+            p.text('Complete', WIDTH / 2, HEIGHT / 2);
+            p.noLoop();
+
         } else {
 
             p.textSize(44);
             p.textAlign(p.CENTER, p.CENTER);
             p.fill(255);
             p.text('Paused', WIDTH / 2, HEIGHT / 2);
-
         }
-
     };
 
     p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -110,6 +115,11 @@ export default function sketch(p) {
             HEIGHT = props.height;
         }
 
+        if (props.hasOwnProperty("maxGenerations")) {
+
+            maxGenerations = props.maxGenerations;
+        }
+
     };
 
     //-----------------------------------------------------------
@@ -123,10 +133,10 @@ export default function sketch(p) {
         p.strokeWeight(1);
 
         for (let x = 0; x <= WIDTH / 20; x++) {
-            p.line(x * 20 + 20, 0, x * 20 +20, HEIGHT);
+            p.line(x * 20 + 20, 0, x * 20 + 20, HEIGHT);
         }
 
-        for (let y = 0; y <= HEIGHT / 20 ; y++) {
+        for (let y = 0; y <= HEIGHT / 20; y++) {
             p.line(0, y * 20 + 20, WIDTH, y * 20 + 20);
         }
 
